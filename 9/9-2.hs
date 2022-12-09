@@ -19,9 +19,9 @@ move "L" (x, y) = (x - 1, y)
 move "U" (x, y) = (x, y + 1)
 move "D" (x, y) = (x, y - 1)
 
-makeMoves :: [(Int, Int)] -> [String] -> [(Int, Int)]
-makeMoves ys [] = ys
-makeMoves (y:ys) (x:xs) = makeMoves (move x y:y:ys) xs
+makeCoords :: [(Int, Int)] -> [String] -> [(Int, Int)]
+makeCoords ys [] = ys
+makeCoords (y:ys) (x:xs) = makeCoords (move x y:y:ys) xs
 
 splitMoves :: [(String, Int)] -> [String]
 splitMoves [] = []
@@ -36,6 +36,6 @@ findNthTail n hcs = findNthTail (n - 1) tcs
 main :: IO ()
 main = do
     contents <- readFile "9.in"
-    let headCoords = reverse . makeMoves [(0, 0)] . splitMoves .  map ((\ [x, y] -> (x, readInt y)) . splitOn " ") . lines $ contents
+    let headCoords = reverse . makeCoords [(0, 0)] . splitMoves .  map ((\ [x, y] -> (x, readInt y)) . splitOn " ") . lines $ contents
         tailCoords = findNthTail 9 headCoords
     print . length . nub $ tailCoords
