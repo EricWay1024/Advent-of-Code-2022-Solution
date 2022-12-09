@@ -19,9 +19,9 @@ move "L" (x, y) = (x - 1, y)
 move "U" (x, y) = (x, y + 1)
 move "D" (x, y) = (x, y - 1)
 
-makeCoords :: [(Int, Int)] -> [String] -> [(Int, Int)]
-makeCoords ys [] = ys
-makeCoords (y:ys) (x:xs) = makeCoords (move x y:y:ys) xs
+makeCoords :: [String] -> [(Int, Int)]
+makeCoords xs = cs
+    where cs = (0, 0) : [move x y | (x, y) <- zip xs cs]
 
 splitMoves :: [(String, Int)] -> [String]
 splitMoves [] = []
@@ -31,6 +31,6 @@ splitMoves ((s, a):sx) = s:splitMoves ((s, a - 1):sx)
 main :: IO ()
 main = do
     contents <- readFile "9.in"
-    let headCoords = reverse . makeCoords [(0, 0)] . splitMoves .  map ((\ [x, y] -> (x, readInt y)) . splitOn " ") . lines $ contents
+    let headCoords = makeCoords . splitMoves .  map ((\ [x, y] -> (x, readInt y)) . splitOn " ") . lines $ contents
         tailCoords = (0, 0) : [moveTail hc tc | (hc, tc) <- zip (tail headCoords) tailCoords]
     print . length . nub $ tailCoords
