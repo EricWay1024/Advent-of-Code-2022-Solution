@@ -1,7 +1,7 @@
 main.py
 *.py
 template.hs
-*.cpp
+# *.cpp
 *.o
 *.test
 .vscode
